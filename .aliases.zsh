@@ -92,6 +92,7 @@ if [ -x "$(command -v exa)" ]; then
   alias ll='exa --group-directories-first --icons -la --color-scale --time-style=long-iso --git --git-ignore --ignore-glob=".git|.DS_Store|__MACOSX|__pycache__" -T -L2'
   alias ll3='exa --group-directories-first --icons -la --git --git-ignore --ignore-glob=".git|.DS_Store|__MACOSX" -T -L3'
   alias ll4='exa --group-directories-first --icons -la --git --git-ignore --ignore-glob=".git|.DS_Store|__MACOSX" -T -L4'
+  alias ls="exa"
   alias tree='exa --group-directories-first -T --icons'
 fi
 
