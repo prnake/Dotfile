@@ -75,6 +75,6 @@ unproxy(){
 
 nasm-bin() { nasm $1.asm -f bin -o $1.bin }
 
-function take() {
+function mkcd() {
   mkdir -p $@ && cd ${@:$#}
 }
