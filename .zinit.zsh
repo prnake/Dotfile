@@ -43,23 +43,6 @@ zi snippet OMZ::plugins/extract
 
 zi ice lucid wait='1'
 zi snippet OMZ::plugins/git/git.plugin.zsh
-zi snippet OMZ::plugins/kubectl/kubectl.plugin.zsh
-
-# Git extension
-zi as"null" wait"1" lucid for \
-    sbin    Fakerr/git-recall \
-    sbin    cloneopts paulirish/git-open \
-    sbin    paulirish/git-recent \
-    sbin    davidosomething/git-my \
-    sbin atload"export _MENU_THEME=legacy" \
-            arzzen/git-quick-stats \
-    sbin    iwata/git-now \
-    make"PREFIX=$ZPFX install" \
-            tj/git-extras \
-    sbin"bin/git-dsf;bin/diff-so-fancy" \
-            zdharma-continuum/zsh-diff-so-fancy \
-   sbin"git-url;git-guclone" make"GITURL_NO_CGITURL=1" \
-            zdharma-continuum/git-url
 
 # 加载 pure 主题
 zplugin ice depth=1; zi light romkatv/powerlevel10k
