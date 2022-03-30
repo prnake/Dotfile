@@ -45,3 +45,5 @@ source "$HOME/.aliases.zsh"
 
 # ZSH Profiling
 #zprof
+
+neofetch
