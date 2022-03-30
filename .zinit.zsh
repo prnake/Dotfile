@@ -43,4 +43,4 @@ zi ice lucid wait='1'
 zi snippet OMZ::plugins/git/git.plugin.zsh
 
 # 加载 pure 主题
-zplugin ice depth=1; zi light romkatv/powerlevel10k
+zi ice depth=1; zi light romkatv/powerlevel10k
