@@ -12,8 +12,7 @@ autoload -Uz _zi
 zicompinit # <- https://z-shell.pages.dev/docs/gallery/collection#minimal
 
 # 快速目录跳转
-zi ice lucid wait='1' depth='1'
-zi light skywind3000/z.lua
+zi load agkozak/zsh-z
 
 # Plugin history-search-multi-word loaded with investigating.
 zi ice depth='1'
@@ -26,7 +25,6 @@ zi light zdharma-continuum/fast-syntax-highlighting
 # 自动建议
 zi ice lucid wait="0" atload='_zsh_autosuggest_start'
 zi light zsh-users/zsh-autosuggestions
-zi load agkozak/zsh-z
 
 # 补全
 zi ice lucid wait='0'
