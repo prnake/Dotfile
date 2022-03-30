@@ -1,5 +1,5 @@
 sudo apt update
-sudo apt install zsh subversion neofetch vim git prettyping -y
+sudo apt install zsh subversion neofetch vim git prettyping exa -y
 sudo chsh -s $(which zsh) $(whoami)
 cp .zshrc ~/
 cp .tmux.conf ~/
