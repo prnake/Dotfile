@@ -32,7 +32,7 @@ fi
 source "$HOME/.local.zsh"
 
 # Zinit comfig.
-source "$HOME/.zinit.zsh"
+source "$HOME/.zi.zsh"
 
 # All self-defined functions.
 source "$HOME/.functions.zsh"
