@@ -22,3 +22,5 @@
     conflictstyle = diff3
 [diff]
     colorMoved = default
+[url "git@git.tsinghua.edu.cn:"]
+    insteadOf = https://git.tsinghua.edu.cn/
