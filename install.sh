@@ -2,7 +2,7 @@
 
 DIR=$(dirname "$0")
 sudo apt update
-sudo apt install zsh subversion neofetch vim git prettyping asciinema tmux -y
+sudo apt install zsh subversion neofetch vim git asciinema tmux -y
 brew install exa
 cp $DIR/.zshrc ~
 cp $DIR/.gitconfig ~/
