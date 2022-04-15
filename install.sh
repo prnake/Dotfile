@@ -9,7 +9,7 @@ cp $DIR/.gitconfig ~/
 cp $DIR/.*.zsh ~/
 cp $DIR/.*.conf ~/
 
-printf "\n[settings]\napi_key = $WAKA_TIME_API_KEY\n" > ~/.wakatime.
+printf "\n[settings]\napi_key = $WAKA_TIME_API_KEY\n" > ~/.wakatime
 mkdir -p ~/.ssh &&
       echo $SSH_PUBLIC_KEY > ~/.ssh/id_ed25519.pub &&
       chmod 644 ~/.ssh/id_ed25519.pub &&

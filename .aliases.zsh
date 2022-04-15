@@ -38,8 +38,10 @@ alias zshrc="$VISUAL ~/.zshrc"
 alias vimrc="$VISUAL ~/.vimrc"
 alias nvimrc="nvim ~/.config/nvim/"
 alias ipad="ip addr | grep inet && hostname -i"
-alias cdp="cd ~/playground" # change to the playground
-alias cdd="cd ~/Downloads" # change to the Downloads
+alias cdw="cd /workspace"
+alias cds="cd /srv"
+alias cdt="cd /tmp"
+
 
 alias h="htop"
 alias v="vim"
@@ -76,8 +78,7 @@ alias tmux="tmux -2" # fix the problem with vim
 alias y="yay"
 alias tmuxrc="vim ~/.tmux.conf"
 alias destory="/bin/rm"
-alias pwq='pwd | tr -d "\n" |xclip -selection c && pwd '
-alias cdt='cd /tmp'
+
 
 
 # ctf usage
@@ -95,8 +96,3 @@ if [ -x "$(command -v exa)" ]; then
   alias ls="exa"
   alias tree='exa --group-directories-first -T --icons'
 fi
-
-if [ -x "$(command -v prettyping)" ]; then
-  alias ping='prettyping --nolegend'
-fi
-
