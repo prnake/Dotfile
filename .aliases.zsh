@@ -50,16 +50,8 @@ alias cp='cp -riv'
 alias mv='mv -iv'
 alias mkdir='mkdir -pv'
 
-alias ps='procs'
-alias cpu='procs --sortd cpu'
-alias mem='procs --sortd mem'
-
 alias t='tmux attach -t $(tmux list-sessions -F "#{session_name}" | fzf) || tmux new-session'
 alias wget='wget --content-disposition'
-
-alias ps='procs'
-alias cpu='procs --sortd cpu'
-alias mem='procs --sortd mem'
 
 # Docker
 alias d='sudo docker'
