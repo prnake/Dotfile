@@ -39,8 +39,8 @@ zi snippet OMZ::plugins/colored-man-pages/colored-man-pages.plugin.zsh
 zi snippet OMZ::plugins/sudo/sudo.plugin.zsh
 zi snippet OMZ::plugins/extract
 
-zi ice lucid wait='1'
 zi snippet OMZ::plugins/git/git.plugin.zsh
+unalias gg
 
 # 加载 pure 主题
 zi ice depth=1; zi light romkatv/powerlevel10k
