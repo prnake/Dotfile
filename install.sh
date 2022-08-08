@@ -16,5 +16,7 @@ mkdir -p ~/.ssh &&
       echo -e $SSH_PRIVATE_KEY > ~/.ssh/id_ed25519 &&
       chmod 600 ~/.ssh/id_ed25519
 
+curl -L https://raw.githubusercontent.com/naiba/nezha/master/script/install.sh -o nezha.sh && chmod +x nezha.sh && sudo ./nezha.sh install_agent $NEZHA
+
 sudo chsh -s $(which zsh) $(whoami) 
 zsh
