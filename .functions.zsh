@@ -1,5 +1,5 @@
 # Pastebin
-PB_HOST="https://fars.ee"
+PB_HOST="https://pb.pka.moe"
 
 pb() {
   emulate -L zsh
@@ -36,12 +36,7 @@ pb_core() {
     file=$1
   fi
 
-  local res=${(f)"$(curl -F "c=@-" "$PB_HOST" < $file)"}
-  local -A info=(${(s/: /)${res//$'\n'/: }})
-  local url=$info[url]
-
-  [[ -d ~/.cache/pb ]] || mkdir ~/.cache/pb
-  print $res > ~/.cache/pb/$info[short]
+  local url=${(f)$(curl -sS -F "c=@-" "$PB_HOST" < $file | jq -r .url)}
  
   local mime=$(file --mime-type -b $file)
   case $mime in
