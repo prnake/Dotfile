@@ -52,4 +52,4 @@ touch ~/.hushlogin
 
 
 # sudo chsh -s $(which zsh) $(whoami)
-# zsh
+zsh

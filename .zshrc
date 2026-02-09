@@ -20,12 +20,12 @@ setopt HIST_IGNORE_SPACE
 # Vim emulation.
 bindkey -v
 
-# Zinit comfig.
-source "$HOME/.zi.zsh"
-
 # All export's.
 # It includes $PATH so that we source it before `.local.zsh`.
 source "$HOME/.exports.zsh"
+
+# Zinit comfig.
+source "$HOME/.zi.zsh"
 
 # Create `local.zsh` if it doesn't exist.
 if [ ! -f "$HOME/.local.zsh" ]; then
@@ -39,9 +39,6 @@ source "$HOME/.functions.zsh"
 
 # All self-defined aliases.
 source "$HOME/.aliases.zsh"
-
-# zoxide
-eval "$(zoxide init zsh --cmd cd)"
 
 # Powerlevel10k
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
