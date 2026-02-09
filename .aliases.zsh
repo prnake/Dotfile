@@ -88,3 +88,9 @@ if [ -x "$(command -v eza)" ]; then
   alias ls="eza"
   alias tree='eza --group-directories-first -T --icons'
 fi
+
+# macos
+alias ssh-proxy="ssh -o 'ProxyCommand=ncat --proxy-type socks5 --proxy 127.0.0.1:6153 %h %p'"
+alias ssh-proxy-clash="ssh -o 'ProxyCommand=ncat --proxy-type socks5 --proxy 127.0.0.1:7890 %h %p'"
+alias ytt='yutto -d ~/Movies/yutto/ -c "`cat ~/Movies/yutto/.sessdata`" -n 16 --vcodec="av1:copy"'
+alias pam="sudo sed -i ".bak" '2s/^/auth       sufficient     pam_tid.so\'$'\n/g' /etc/pam.d/sudo"
