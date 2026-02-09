@@ -14,121 +14,174 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# zi 插件管理器
-if [[ ! -f $HOME/.zi/bin/zi.zsh ]]; then
-  print -P "%F{33}▓▒░ %F{160}Installing (%F{33}z-shell/zi%F{160})…%f"
-  command mkdir -p "$HOME/.zi" && command chmod g-rwX "$HOME/.zi"
-  command git clone -q --depth=1 --branch "main" https://github.com/z-shell/zi "$HOME/.zi/bin" && \
-    print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
-    print -P "%F{160}▓▒░ The clone has failed.%f%b"
-fi
-source "$HOME/.zi/bin/zi.zsh"
-autoload -Uz _zi
-(( ${+_comps} )) && _comps[zi]=_zi
+# zinit 插件管理器
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+source "${ZINIT_HOME}/zinit.zsh"
 
 # 插件初始化
-zicompinit
 
-# 快速目录跳转
-zi light agkozak/zsh-z
+# ------------------- 核心配置 -------------------
+skip_global_compinit=1
+DISABLE_MAGIC_FUNCTIONS=true
+ZSH_DISABLE_COMPFIX=true
 
-# 历史搜索增强
-zi ice depth='1'
-zi light zdharma-continuum/history-search-multi-word
+# 补全系统设置
+COMPLETION_WAITING_DOTS="true"
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+ZSH_AUTOSUGGEST_USE_ASYNC=1
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+
+# ------------------- Powerlevel10k 即时提示 -------------------
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# ------------------- 平台检测 -------------------
+case "$(uname -s)-$(uname -m)" in
+    Darwin-arm64)
+        _ATUIN_BPICK="*aarch64-apple-darwin.tar.gz"
+        _EZA_BPICK=""  # eza 无 macOS 二进制，需 brew install eza
+        _BAT_BPICK="*aarch64-apple-darwin.tar.gz"
+        _RG_BPICK="*aarch64-apple-darwin.tar.gz"
+        _FD_BPICK="*aarch64-apple-darwin.tar.gz"
+        _LAZYDOCKER_BPICK="*Darwin_arm64.tar.gz"
+        _FASTFETCH_BPICK="*macos-aarch64.tar.gz"
+        _FASTFETCH_MV="fastfetch*/usr/bin/fastfetch -> fastfetch"
+        _DUF_BPICK="*darwin_arm64.tar.gz"
+        ;;
+    Darwin-x86_64)
+        _ATUIN_BPICK="*x86_64-apple-darwin.tar.gz"
+        _EZA_BPICK=""
+        _BAT_BPICK="*x86_64-apple-darwin.tar.gz"
+        _RG_BPICK="*x86_64-apple-darwin.tar.gz"
+        _FD_BPICK="*x86_64-apple-darwin.tar.gz"
+        _LAZYDOCKER_BPICK="*Darwin_x86_64.tar.gz"
+        _FASTFETCH_BPICK="*macos-amd64.tar.gz"
+        _FASTFETCH_MV="fastfetch*/usr/bin/fastfetch -> fastfetch"
+        _DUF_BPICK="*darwin_x86_64.tar.gz"
+        ;;
+    Linux-x86_64|*)
+        _ATUIN_BPICK="*x86_64-unknown-linux-gnu.tar.gz"
+        _EZA_BPICK="*x86_64-unknown-linux-gnu.tar.gz"
+        _BAT_BPICK="*x86_64-unknown-linux-gnu.tar.gz"
+        _RG_BPICK="*x86_64-unknown-linux-musl.tar.gz"
+        _FD_BPICK="*x86_64-unknown-linux-gnu.tar.gz"
+        _LAZYDOCKER_BPICK="*Linux_x86_64.tar.gz"
+        _FASTFETCH_BPICK="*linux-amd64.tar.gz"
+        _FASTFETCH_MV="fastfetch*/usr/bin/fastfetch -> fastfetch"
+        _DUF_BPICK="*linux_x86_64.tar.gz"
+        ;;
+esac
+
+# ------------------- zinit 插件管理器 -------------------
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# zinit annexes
+zinit ice wait"1" lucid as"null" for \
+    zdharma-continuum/zinit-annex-as-monitor \
+    zdharma-continuum/zinit-annex-bin-gem-node \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-rust
+
+# ------------------- 主题 -------------------
+zinit ice depth=1
+zinit light romkatv/powerlevel10k
 
 # ------------------- 核心插件 -------------------
-# 语法高亮
-zi ice lucid atinit='zpcompinit'
-zi light zdharma-continuum/fast-syntax-highlighting
+# fzf
+zinit ice from"gh-r" as"command"
+zinit light junegunn/fzf
 
-# 自动建议
-zi ice lucid atload='_zsh_autosuggest_start; bindkey "^R" autosuggest-accept'
-zi light zsh-users/zsh-autosuggestions
-
-# 补全增强
-zi ice lucid wait='0' atload'zicompinit; zicdreplay'
-zi light zsh-users/zsh-completions
+# 补全增强 & 补全初始化
+zinit ice wait"0a" lucid atload"zicompinit; zicdreplay" blockf
+zinit light zsh-users/zsh-completions
 
 # fzf-tab
-zi ice lucid wait='0'
-zi light Aloxaf/fzf-tab
+zinit ice wait"0b" lucid
+zinit light Aloxaf/fzf-tab
 
-# 加载 OMZ 框架及部分插件
-zi snippet OMZ::lib/completion.zsh
-zi snippet OMZ::lib/history.zsh
-zi snippet OMZ::lib/key-bindings.zsh
-zi snippet OMZ::lib/theme-and-appearance.zsh
-zi snippet OMZ::plugins/colored-man-pages/colored-man-pages.plugin.zsh
-zi snippet OMZ::plugins/sudo/sudo.plugin.zsh
-zi snippet OMZ::plugins/extract
-zi snippet OMZ::plugins/git/git.plugin.zsh
+# 自动建议
+zinit ice wait"0c" lucid \
+    atload'
+        _zsh_autosuggest_start
+        bindkey "\`" autosuggest-accept
+    '
+zinit light zsh-users/zsh-autosuggestions
 
-# fzf
-zi ice from"gh-r" as"command"
-zi light junegunn/fzf
-
-# atuin (历史命令搜索)
-zi ice lucid from"gh-r" as"program" \
-    bpick"*x86_64-unknown-linux-gnu.tar.gz" \
+# 历史命令
+zinit ice wait"0d" lucid from"gh-r" as"program" \
+    bpick"$_ATUIN_BPICK" \
     extract"" \
     mv"atuin*/atuin -> atuin" \
     atload'
         eval "$(atuin init zsh)"
         bindkey "^R" _atuin_search_widget
     '
-zi light atuinsh/atuin
+zinit light atuinsh/atuin
+
+# 语法高亮
+zinit ice wait"0e" lucid atinit"zpcompinit;zpcdreplay"
+zinit light zdharma-continuum/fast-syntax-highlighting
 
 # ------------------- CLI 工具 -------------------
-# eza (ls 增强)
-zi ice lucid from"gh-r" as"program" \
-    bpick"*x86_64-unknown-linux-musl.tar.gz" \
-    extract"" \
-    mv"eza* -> eza"
-zi light eza-community/eza
+# 核心工具（无延迟加载）
+if [[ -n "$_EZA_BPICK" ]]; then
+    zinit ice wait"0" lucid from"gh-r" as"program" \
+        bpick"$_EZA_BPICK" \
+        extract"" \
+        mv"eza* -> eza"
+    zinit light eza-community/eza
+fi
 
-# bat (cat 增强)
-zi ice lucid from"gh-r" as"program" \
-    bpick"*x86_64-unknown-linux-gnu.tar.gz" \
+zinit ice wait"0" lucid from"gh-r" as"program" \
+    bpick"$_BAT_BPICK" \
     extract"" \
     mv"bat*/bat -> bat"
-zi light sharkdp/bat
+zinit light sharkdp/bat
 
 # 延迟加载工具
-zi ice wait="1" lucid from"gh-r" as"program" \
-    bpick"*x86_64-unknown-linux-musl.tar.gz" \
+zinit ice wait"1" lucid from"gh-r" as"program" \
+    bpick"$_RG_BPICK" \
     extract"" \
     mv"ripgrep*/rg -> rg"
-zi light BurntSushi/ripgrep
+zinit light BurntSushi/ripgrep
 
-zi ice wait="1" lucid from"gh-r" as"program" \
-    bpick"*x86_64-unknown-linux-gnu.tar.gz" \
+zinit ice wait"1" lucid from"gh-r" as"program" \
+    bpick"$_FD_BPICK" \
     extract"" \
     mv"fd*/fd -> fd"
-zi light sharkdp/fd
+zinit light sharkdp/fd
 
-zi ice wait="1" lucid from"gh-r" as"program" \
-    bpick"*Linux_x86_64.tar.gz" \
+zinit ice wait"1" lucid from"gh-r" as"program" \
+    bpick"$_LAZYDOCKER_BPICK" \
     extract""
-zi light jesseduffield/lazydocker
+zinit light jesseduffield/lazydocker
 
-zi ice wait="1" lucid from"gh-r" as"program" \
-    bpick"*linux-amd64.tar.gz" \
+zinit ice wait"1" lucid from"gh-r" as"program" \
+    bpick"$_FASTFETCH_BPICK" \
     extract"" \
-    mv"fastfetch*/usr/bin/fastfetch -> fastfetch" \
-    atload'chmod +x fastfetch'
-zi light fastfetch-cli/fastfetch
+    mv"$_FASTFETCH_MV" \
+    atclone"chmod +x fastfetch" \
+    atpull"%atclone"
+zinit light fastfetch-cli/fastfetch
 
-# prettyping
-zi ice wait="1" lucid as"program" pick"prettyping"
-zi load denilsonsa/prettyping
+zinit ice wait"1" lucid from"gh-r" as"program" \
+    bpick"$_DUF_BPICK" \
+    extract=""
+zinit light muesli/duf
+
+zinit ice wait"1" lucid as"program" pick"prettyping"
+zinit load denilsonsa/prettyping
 
 # bat-extras
-zi ice wait="1" lucid as"program" pick"src/batgrep.sh" pick"src/batdiff.sh"
-zi light eth-p/bat-extras
+zinit ice wait"1" lucid as"program" \
+    pick"src/batgrep.sh" pick"src/batdiff.sh" \
+    atload'alias batgrep="batgrep.sh"; alias batdiff="batdiff.sh"'
+zinit light eth-p/bat-extras
 
-# 加载 pure/powerlevel10k 主题
-zi ice depth=1
-zi light romkatv/powerlevel10k
 
 # ------------------- 补全配置 -------------------
 # 基础补全设置
@@ -187,4 +240,68 @@ conda() {
 [[ "${CONDA_AUTO_ACTIVATE_BASE:-true}" == "true" ]] && {
     eval "$(/opt/miniforge/bin/conda shell.zsh hook)"
     conda activate base
+}
+
+# ------------------- 其他工具配置 -------------------
+# zoxide
+eval "$(zoxide init zsh --cmd cd)"
+
+# Powerlevel10k 配置
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# ------------------- 核心插件 -------------------
+# 语法高亮
+zi ice lucid atinit='zpcompinit'
+zi light zdharma-continuum/fast-syntax-highlighting
+zi ice lucid atload='_zsh_autosuggest_start'
+zi light zsh-users/zsh-autosuggestions
+
+# 补全增强
+zi ice lucid wait='0'
+zi light zsh-users/zsh-completions
+
+# fzf-tab
+zi ice lucid wait='0'
+zi light Aloxaf/fzf-tab
+
+# OMZ 插件 (只保留必要的)
+zi snippet OMZ::lib/key-bindings.zsh
+zi snippet OMZ::plugins/extract
+zi snippet OMZ::plugins/git/git.plugin.zsh
+
+# 快速目录跳转
+zi light agkozak/zsh-z
+
+# 历史搜索
+zi ice depth='1'
+zi light zdharma-continuum/history-search-multi-word
+
+# Powerlevel10k 主题
+zi ice depth=1
+zi light romkatv/powerlevel10k
+
+# ------------------- 补全配置 -------------------
+zstyle ':completion:*' completer _expand _complete _ignored
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu no
+
+# fzf-tab
+zstyle ':fzf-tab:*' use-fzf-default-opts yes
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls $realpath'
+zstyle ':fzf-tab:*' fzf-bindings '`:accept'
+
+# 自动建议
+ZSH_AUTOSUGGEST_STRATEGY=(history)
+ZSH_AUTOSUGGEST_COMPLETION_IGNORE='( |man |pikaur -S )*'
+
+# fzf 配置
+export FZF_DEFAULT_OPTS="--ansi --layout=reverse --info=inline --height=50% --multi --cycle --prompt='λ -> '"
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+
+# Conda (延迟加载)
+conda() {
+    unfunction conda
+    eval "$(/opt/miniforge/bin/conda shell.zsh hook)"
+    conda $@
 }

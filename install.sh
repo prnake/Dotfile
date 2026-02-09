@@ -32,10 +32,14 @@ install_packages() {
 
 install_packages
 
+# bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"
+
 cp $DIR/.zshrc ~
 cp $DIR/.gitconfig ~/
 cp $DIR/.*.zsh ~/
 cp $DIR/.*.conf ~/
+
+touch ~/.hushlogin
 
 # printf "\n[settings]\napi_key = $WAKA_TIME_API_KEY\n" > ~/.wakatime.cfg
 # mkdir -p ~/.ssh &&
