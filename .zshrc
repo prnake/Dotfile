@@ -40,10 +40,11 @@ source "$HOME/.functions.zsh"
 # All self-defined aliases.
 source "$HOME/.aliases.zsh"
 
-# p10k
+# zoxide
+eval "$(zoxide init zsh --cmd cd)"
+
+# Powerlevel10k
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # ZSH Profiling
 #zprof
-
-neofetch
