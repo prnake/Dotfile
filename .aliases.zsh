@@ -71,7 +71,7 @@ alias y="yay"
 alias tmuxrc="vim ~/.tmux.conf"
 alias destory="/bin/rm"
 
-
+alias hh="atuin search -i"
 
 # ctf usage
 alias xb64d='xsel -ob 2>/dev/null | base64 -d'

@@ -117,7 +117,7 @@ zinit ice wait"0d" lucid from"gh-r" as"program" \
     extract"" \
     mv"atuin*/atuin -> atuin" \
     atload'
-        eval "$(atuin init zsh)"
+        eval "$(atuin init zsh --disable-up-arrow)"
         bindkey "^R" _atuin_search_widget
     '
 zinit light atuinsh/atuin
