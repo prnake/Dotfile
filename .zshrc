@@ -20,6 +20,9 @@ setopt HIST_IGNORE_SPACE
 # Vim emulation.
 bindkey -v
 
+# All self-defined aliases.
+source "$HOME/.aliases.zsh"
+
 # All export's.
 # It includes $PATH so that we source it before `.local.zsh`.
 source "$HOME/.exports.zsh"
@@ -37,11 +40,11 @@ source "$HOME/.local.zsh"
 # All self-defined functions.
 source "$HOME/.functions.zsh"
 
-# All self-defined aliases.
-source "$HOME/.aliases.zsh"
-
 # Powerlevel10k
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# set proxy
+proxy > /dev/null 2>&1
 
 # ZSH Profiling
 #zprof
