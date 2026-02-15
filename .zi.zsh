@@ -1,4 +1,3 @@
-# 性能优化选项
 skip_global_compinit=1
 DISABLE_MAGIC_FUNCTIONS=true
 ZSH_DISABLE_COMPFIX=true
@@ -9,34 +8,12 @@ ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 
-# Powerlevel10k 即时提示
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
 
 # zinit 插件管理器
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
 [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 source "${ZINIT_HOME}/zinit.zsh"
-
-# 插件初始化
-
-# ------------------- 核心配置 -------------------
-skip_global_compinit=1
-DISABLE_MAGIC_FUNCTIONS=true
-ZSH_DISABLE_COMPFIX=true
-
-# 补全系统设置
-COMPLETION_WAITING_DOTS="true"
-ZSH_AUTOSUGGEST_MANUAL_REBIND=1
-ZSH_AUTOSUGGEST_USE_ASYNC=1
-ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
-
-# ------------------- Powerlevel10k 即时提示 -------------------
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
 
 # ------------------- 平台检测 -------------------
 case "$(uname -s)-$(uname -m)" in
@@ -102,6 +79,9 @@ zinit light zsh-users/zsh-completions
 # fzf-tab
 zinit ice wait"0b" lucid
 zinit light Aloxaf/fzf-tab
+
+# OMZ 插件 (只保留必要的)
+zinit snippet OMZ::plugins/git/git.plugin.zsh
 
 # 自动建议
 zinit ice wait"0c" lucid \
@@ -245,63 +225,3 @@ conda() {
 # ------------------- 其他工具配置 -------------------
 # zoxide
 eval "$(zoxide init zsh --cmd cd)"
-
-# Powerlevel10k 配置
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# ------------------- 核心插件 -------------------
-# 语法高亮
-zi ice lucid atinit='zpcompinit'
-zi light zdharma-continuum/fast-syntax-highlighting
-zi ice lucid atload='_zsh_autosuggest_start'
-zi light zsh-users/zsh-autosuggestions
-
-# 补全增强
-zi ice lucid wait='0'
-zi light zsh-users/zsh-completions
-
-# fzf-tab
-zi ice lucid wait='0'
-zi light Aloxaf/fzf-tab
-
-# OMZ 插件 (只保留必要的)
-zi snippet OMZ::lib/key-bindings.zsh
-zi snippet OMZ::plugins/extract
-zi snippet OMZ::plugins/git/git.plugin.zsh
-
-# 快速目录跳转
-zi light agkozak/zsh-z
-
-# 历史搜索
-zi ice depth='1'
-zi light zdharma-continuum/history-search-multi-word
-
-# Powerlevel10k 主题
-zi ice depth=1
-zi light romkatv/powerlevel10k
-
-# ------------------- 补全配置 -------------------
-zstyle ':completion:*' completer _expand _complete _ignored
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-zstyle ':completion:*' menu no
-
-# fzf-tab
-zstyle ':fzf-tab:*' use-fzf-default-opts yes
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls $realpath'
-zstyle ':fzf-tab:*' fzf-bindings '`:accept'
-
-# 自动建议
-ZSH_AUTOSUGGEST_STRATEGY=(history)
-ZSH_AUTOSUGGEST_COMPLETION_IGNORE='( |man |pikaur -S )*'
-
-# fzf 配置
-export FZF_DEFAULT_OPTS="--ansi --layout=reverse --info=inline --height=50% --multi --cycle --prompt='λ -> '"
-export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
-
-# Conda (延迟加载)
-conda() {
-    unfunction conda
-    eval "$(/opt/miniforge/bin/conda shell.zsh hook)"
-    conda $@
-}

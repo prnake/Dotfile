@@ -94,3 +94,4 @@ alias ssh-proxy="ssh -o 'ProxyCommand=ncat --proxy-type socks5 --proxy 127.0.0.1
 alias ssh-proxy-clash="ssh -o 'ProxyCommand=ncat --proxy-type socks5 --proxy 127.0.0.1:7890 %h %p'"
 alias ytt='yutto -d ~/Movies/yutto/ -c "`cat ~/Movies/yutto/.sessdata`" -n 16 --vcodec="av1:copy"'
 alias pam="sudo sed -i ".bak" '2s/^/auth       sufficient     pam_tid.so\'$'\n/g' /etc/pam.d/sudo"
+alias up="brew update && brew upgrade && brew cu -a -y && brew cleanup && mas upgrade" 
