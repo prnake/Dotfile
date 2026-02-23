@@ -59,14 +59,17 @@ b64() { echo -n $1 | base64 }
 b64d() { echo -n $1 | base64 -d}
 
 proxy() {
-    export http_proxy=http://localhost:7890
-    export https_proxy=http://localhost:7890
+  if nc -z 127.0.0.1 7890 2>/dev/null; then
+    export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890
+    echo "Proxy set: Clash"
+  elif nc -z 127.0.0.1 6152 2>/dev/null; then
+    export https_proxy=http://127.0.0.1:6152 http_proxy=http://127.0.0.1:6152 all_proxy=socks5://127.0.0.1:6153
+    echo "Proxy set: Surge"
+  else
+    echo "No proxy detected"
+  fi
 }
-
-unproxy(){
-    unset http_proxy
-    unset https_proxy
-}
+alias noproxy='unset https_proxy http_proxy all_proxy'
 
 nasm-bin() { nasm $1.asm -f bin -o $1.bin }
 

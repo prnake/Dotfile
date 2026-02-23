@@ -49,19 +49,6 @@ alias py='python3'
 alias pt='python3 test.py'
 alias pp='python3 p.py'
 
-proxy() {
-  if nc -z 127.0.0.1 7890 2>/dev/null; then
-    export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890
-    echo "Proxy set: Clash"
-  elif nc -z 127.0.0.1 6152 2>/dev/null; then
-    export https_proxy=http://127.0.0.1:6152 http_proxy=http://127.0.0.1:6152 all_proxy=socks5://127.0.0.1:6153
-    echo "Proxy set: Surge"
-  else
-    echo "No proxy detected"
-  fi
-}
-alias noproxy='unset https_proxy http_proxy all_proxy'
-
 # Editors & Open
 alias o.='open .'
 alias cr.='cursor .'
