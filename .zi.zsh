@@ -224,4 +224,6 @@ conda() {
 
 # ------------------- 其他工具配置 -------------------
 # zoxide
-eval "$(zoxide init zsh --cmd cd)"
+if [[ $- == *i* ]]; then
+  eval "$(zoxide init zsh --cmd cd)"
+fi
