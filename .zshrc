@@ -17,8 +17,8 @@ setopt EXTENDED_HISTORY
 # used for sensitive command.
 setopt HIST_IGNORE_SPACE
 
-# Vim emulation.
-bindkey -v
+# Emacs keybindings (default).
+bindkey -e
 
 # All self-defined aliases.
 source "$HOME/.aliases.zsh"
