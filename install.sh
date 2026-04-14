@@ -26,7 +26,7 @@ install_packages() {
     fi
 
     if [ "$pkg_manager" = "apt" ] || [ "$pkg_manager" = "brew" ]; then
-        brew install zoxide atuin eza
+        brew install zoxide eza
     fi
 }
 
